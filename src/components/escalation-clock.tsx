@@ -16,10 +16,20 @@ import { Reveal } from "@/components/reveal";
  * and class, and inventing them would be the genuinely harmful thing to do.
  */
 
-const severityTint = [
-  "bg-rule", // 0 — neutral
-  "bg-accent/45", // 1
+/** The connecting rail. Kept visible at severity 0 so the line reads as one
+ *  continuous thing rather than starting somewhere in the middle. */
+const trackTint = [
+  "bg-ink/30", // 0 — neutral, but still clearly a line
+  "bg-accent/50", // 1
   "bg-signal/55", // 2
+  "bg-signal/80", // 3
+] as const;
+
+/** The tick sitting on the rail — always a touch stronger than its segment. */
+const tickTint = [
+  "bg-ink", // 0
+  "bg-accent", // 1
+  "bg-signal/75", // 2
   "bg-signal", // 3
 ] as const;
 
@@ -64,21 +74,24 @@ export function EscalationClock() {
                 key={stage.id}
                 className="relative grid grid-cols-[auto_1fr] gap-x-5 md:block"
               >
-                {/* Rail: vertical on mobile, horizontal on desktop */}
+                {/* Rail: vertical on mobile, horizontal on desktop.
+                    `md:items-center` matters — without it the flex default
+                    (stretch) drops the fixed-height tick at the cross-start,
+                    leaving the diamonds floating above the track. */}
                 <div
-                  className="relative flex w-4 justify-center md:mb-6 md:h-4 md:w-full md:justify-start"
+                  className="relative flex w-4 justify-center md:mb-6 md:h-4 md:w-full md:items-center md:justify-start"
                   aria-hidden="true"
                 >
                   {/* the track */}
                   <span
                     className={`absolute top-0 bottom-0 w-px md:top-1/2 md:right-0 md:bottom-auto md:left-0 md:h-px md:w-auto md:-translate-y-1/2 ${
-                      severityTint[stage.severity]
+                      trackTint[stage.severity]
                     } ${i === escalation.length - 1 ? "md:hidden" : ""}`}
                   />
                   {/* the tick */}
                   <span
                     className={`relative mt-1 h-2.5 w-2.5 shrink-0 rotate-45 md:mt-0 ${
-                      stage.severity === 0 ? "bg-ink" : severityTint[stage.severity]
+                      tickTint[stage.severity]
                     }`}
                   />
                 </div>
