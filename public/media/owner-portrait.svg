@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img"><rect width="800" height="1000" fill="#edeae1"/>
+<circle cx="400" cy="380" r="120" fill="#8a8172" opacity="0.22"/>
+<path d="M176 820 a224.00000000000003 200 0 0 1 448.00000000000006 0 Z" fill="#8a8172" opacity="0.22"/>
+<rect x="0" y="996" width="800" height="4" fill="#c0392b"/>
+<g stroke="#a9a08d" stroke-width="1.1428571428571428" opacity="0.5" fill="none">
+<path d="M36 60 V36 H60"/>
+<path d="M740 36 H764 V60"/>
+<path d="M764 940 V964 H740"/>
+<path d="M60 964 H36 V940"/>
+</g>
+<text x="36" y="936"
+font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+font-size="26"
+letter-spacing="3"
+fill="#c0392b">PLACEHOLDER</text>
+<text x="36" y="964"
+font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+font-size="21"
+fill="#a9a08d">OWNER PORTRAIT</text>
+<text x="36" y="994"
+font-family="ui-monospace, SFMono-Regular, Menlo, monospace"
+font-size="18"
+fill="#a9a08d" opacity="0.75">Nasacha Canto — real photo needed</text></svg>

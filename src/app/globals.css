@@ -1,27 +1,256 @@
 @import "tailwindcss";
 
-:root {
-  --background: #f7f8f3;
-  --foreground: #17211b;
+/* ==========================================================================
+   Canto Violation Solutions — design tokens
+
+   Direction: modern professional. A warm neutral foundation — soft near-black
+   through to bone — carrying almost all of the design, with colour used only
+   where it means something.
+
+   Token names are deliberately ROLE-BASED (`ink`, `body`, `muted`, `dim`,
+   `accent`, `signal`) rather than hue-based. The palette has been revised
+   more than once; naming by job rather than by colour means the next
+   revision is an edit to this block alone and nothing else.
+
+   Usage rules, enforced by the component API rather than by memory:
+     · `signal` (red)  — urgency ONLY. Deadlines, hearing dates, errors,
+                         placeholder markers. Never decoration.
+     · `accent` (bronze) — quiet structural/brand emphasis. Never urgency,
+                         so the two warm colours can never be confused.
+     · Primary actions stay `ink`, so colour never competes with the CTA.
+
+   Every value below is measured, not eyeballed; ratios are noted inline.
+   ========================================================================== */
+
+@theme {
+  /* Ground — a warm near-black. Soft rather than stark. */
+  --color-ink: #17150f;
+  --color-ink-800: #221f16;
+  --color-ink-700: #2e2a22;
+
+  /* Text */
+  --color-body: #635d51; /* 6.16:1 on paper */
+  --color-muted: #6f6859; /* 5.21:1 on paper */
+  --color-dim: #a9a08d; /* 7.04:1 on ink — muted text on dark grounds */
+  --color-dim-700: #7b7463; /* 3.60:1 on ink — recessive numerals, still legible */
+
+  /* Neutrals — bone. Warm, but kept close to paper rather than cream. */
+  --color-rule: #e6e2d9;
+  --color-rule-soft: #efece5;
+  --color-mist: #edeae1;
+  --color-paper: #faf8f4;
+
+  /* Signal — urgency only. Two tones, because no single red clears 4.5:1
+     against both the bone paper and the ink ground. */
+  --color-signal: #c0392b; /* 5.13:1 on paper, 5.44:1 on white */
+  --color-signal-300: #e8836f; /* 6.87:1 on ink */
+  --color-signal-soft: #faeae7; /* signal on it: 4.66:1 */
+
+  /* Accent — bronze. Structural emphasis, never urgency. */
+  --color-accent: #9c5d1c; /* 4.95:1 on paper, white on it 5.26:1 */
+  --color-accent-300: #cf9550; /* 7.01:1 on ink */
+
+  /* Focus ring — clears 3:1 against BOTH grounds (paper 5.13, ink 3.36),
+     so keyboard focus never disappears on a dark section. */
+  --color-focus: #c0392b;
+
+  /* Confirmation — resolved / closed states */
+  --color-clear: #4a6b3a;
+
+  /* Display face is a modern grotesque, NOT a serif. Warm neutrals plus a
+     high-contrast display serif is the single most over-produced look going
+     right now; the grotesque keeps the warmth while reading contemporary. */
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+
+  --radius-field: 3px;
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Display: Archivo, set heavy and tight. A grotesque at this weight and
+     tracking is what makes the warm palette read modern rather than
+     trad-editorial — it is doing the heavy lifting against that cliché. */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 620;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Inputs inherit the form-document language of the site */
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+/* ==========================================================================
+   Components
+   ========================================================================== */
+
+@layer components {
+  /* --- Field label -------------------------------------------------------
+     The structural device of this site. Every piece of metadata is set as a
+     government form field label: mono, uppercase, tracked out, hairline rule
+     beneath. It encodes "this is a record" rather than decorating. */
+  .field-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* --- Document surface --------------------------------------------------
+     Zero-radius, hairline-ruled panels that read as paper records. Distinct
+     from interactive UI, which keeps a small consistent radius. */
+  .document {
+    background-color: #fff;
+    border: 1px solid var(--color-rule);
+    box-shadow: 0 1px 2px rgb(23 21 15 / 0.05);
+  }
+
+  /* --- Perforated edge ---------------------------------------------------
+     A torn-stub motif for the decoder panel. One accessory, used once. */
+  .perforated-top {
+    background-image: radial-gradient(
+      circle at 6px 0,
+      transparent 0 4px,
+      currentColor 4px
+    );
+    background-size: 12px 8px;
+    background-repeat: repeat-x;
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s var(--ease-out-soft);
+  }
+
+  .link-underline:hover {
+    background-size: 0% 1px;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
+/* ==========================================================================
+   Motion — one orchestrated load sequence, one scroll reveal. Nothing else.
+   ========================================================================== */
+
+@layer utilities {
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-rise {
+    animation: rise 0.85s var(--ease-out-soft) both;
+  }
+
+  .animate-fade {
+    animation: fade 0.5s var(--ease-out-soft) both;
+  }
+
+  /* Scroll reveal — driven by IntersectionObserver in components/reveal.tsx.
+
+     The hidden starting state is gated behind `scripting: enabled` so it
+     FAILS OPEN: if JS is disabled, still loading, or errors out, the rule
+     never applies and the content is simply visible. A browser that doesn't
+     understand the media query ignores the block entirely — same result.
+     Content must never depend on an animation having run. */
+  .reveal {
+    transition:
+      opacity 0.5s var(--ease-out-soft),
+      transform 0.5s var(--ease-out-soft);
+  }
+
+  @media (scripting: enabled) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .reveal[data-visible="true"] {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
-::selection {
-  background: #d9e4cf;
-  color: #101712;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
